@@ -1,0 +1,3 @@
+*.txt
+/euro_api_env
+/__pycache__
