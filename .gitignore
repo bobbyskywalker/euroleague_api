@@ -1,3 +1,4 @@
 *.txt
 /euro_api_env
-/__pycache__
+*/__pycache__
+/misc

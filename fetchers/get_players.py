@@ -4,7 +4,6 @@ from flask import jsonify
 
 db_path = "/home/olek/Desktop/my_projects/python_projects/euroleague_project/euroleague_db_creator/euroleague.db"
 
-
 # retrieves players list for a provided season
 def retrieve_all_players(season):
 
@@ -65,7 +64,7 @@ def model_player_json(player_carrer):
             "fouls": row["fouls"],
         }
         if year not in seasons_data:
-            seasons_data[year] = []
+            return json.dumps({"error 404": "Resource not found."})
         seasons_data[year].append(player_data)
 
     res_json = json.dumps(seasons_data, indent=1)
