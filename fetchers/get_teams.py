@@ -1,11 +1,12 @@
 import sqlite3
-import json
 
 
 class TeamFetcher:
     def __init__(self, db_path) -> None:
         self.db_path = db_path
 
+    # season parameter is optional- makes func generic both for 
+    # all-time list and specific season lists
     def get_team_list(self, season):
         conn = sqlite3.connect(self.db_path)
         c = conn.cursor()
@@ -23,7 +24,6 @@ class TeamFetcher:
                 (season,),
             )
         teams = c.fetchall()
-
         conn.commit()
         conn.close()
 
@@ -32,15 +32,14 @@ class TeamFetcher:
             team_data = {"id": row[0], "code": row[1], "name": row[2]}
             res.append(team_data)
 
-        return json.dumps(res, indent=4)
+        return res
 
     def get_team_roster(self, season, team_code):
         conn = sqlite3.connect(self.db_path)
         c = conn.cursor()
         conn.row_factory = sqlite3.Row
-
         c.execute(
-            """SELECT p.code, p.first_name, p.last_name, p.yob
+            """SELECT DISTINCT p.code, p.first_name, p.last_name, p.yob
                 FROM players p 
                 JOIN playersTeams pt on p.id = pt.player_id 
                 JOIN teams t on t.id = pt.team_id
@@ -48,9 +47,7 @@ class TeamFetcher:
                 WHERE s."year" = ? and t.code = ?""",
             (season, team_code),
         )
-
         players = c.fetchall()
-
         conn.commit()
         conn.close()
 
@@ -63,6 +60,4 @@ class TeamFetcher:
                 "yob": row[3],
             }
             res.append(player_data)
-        if not res:
-            return json.dumps({"error 404": "Resource not found."})
-        return json.dumps(res, indent=4)
+        return res

@@ -1,15 +1,13 @@
-import json
-
-
-def model_player_json(player_carrer):
-    seasons_data = []
-    for row in player_carrer:
-        player_data = {
+def model_player_json(player_career):
+    player_data = []
+    for row in player_career:
+            player_data.append({
             "id": row["id"],
             "first_name": row["first_name"],
             "last_name": row["last_name"],
             "yob": row["yob"],
             "team_name": row["team_name"],
+            "season_year": row["year"],
             "points_scored": row["points_scored"],
             "two_pointers_made": row["two_pointers_made"],
             "two_pointers_attempted": row["two_pointers_attempted"],
@@ -23,8 +21,6 @@ def model_player_json(player_carrer):
             "steals": row["steals"],
             "turnovers": row["turnovers"],
             "blocks": row["blocks"],
-            "fouls": row["fouls"],
-        }
-        seasons_data.append(player_data)
-    res_json = json.dumps(seasons_data, indent=4)
-    return res_json
+            "fouls": row["fouls"]
+        })
+    return player_data

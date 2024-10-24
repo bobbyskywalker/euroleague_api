@@ -1,5 +1,5 @@
 *.txt
-/euro_api_env
+/myenv
 */__pycache__
 /misc
 /__pycache__

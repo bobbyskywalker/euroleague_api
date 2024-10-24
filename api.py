@@ -1,15 +1,15 @@
-from flask import Flask
-from flask import jsonify
+from fastapi import FastAPI
 
-from routes.player_requests import players_bp
-from routes.team_requests import teams_bp
+from routers.player_requests import players_router
+from routers.team_requests import teams_router
 
-db_path = "/home/olek/Desktop/my_projects/python_projects/euroleague_project/euroleague_db_creator/euroleague.db"
+db_path = "../euroleague.db"
 
-app = Flask(__name__)
+app = FastAPI()
 
-app.register_blueprint(players_bp)
-app.register_blueprint(teams_bp)
+app.include_router(players_router)
+app.include_router(teams_router)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000)
