@@ -1,5 +1,4 @@
 *.txt
 /myenv
 */__pycache__
-/misc
 /__pycache__
