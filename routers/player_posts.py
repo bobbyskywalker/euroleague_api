@@ -25,7 +25,7 @@ async def insert_player(player: Player):
         c = conn.cursor()
         c.execute(
             """INSERT INTO players (code, first_name, last_name, yob) VALUES (?, ?, ?, ?)""",
-            (player.code, player.first_name, player.last_name, player.yob),
+            (player.code, player.first_name, player.last_name, f"{player.yob}-01-01"),
         )
         conn.commit()
     return player
