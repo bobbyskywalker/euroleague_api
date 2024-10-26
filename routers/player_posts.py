@@ -1,0 +1,114 @@
+from fastapi import APIRouter, HTTPException
+import sqlite3
+from contextlib import contextmanager
+
+from inserts.player_class import Player, PlayerSeason
+
+player_insert = APIRouter()
+db_path = "../euroleague.db"
+
+
+@contextmanager
+def get_db_conn():
+    conn = sqlite3.connect(
+        db_path, timeout=10
+    )  # Set timeout to handle database locking
+    try:
+        yield conn
+    finally:
+        conn.close()
+
+
+@player_insert.post("/player/add", response_model=Player)
+async def insert_player(player: Player):
+    with get_db_conn() as conn:
+        c = conn.cursor()
+        c.execute(
+            """INSERT INTO players (code, first_name, last_name, yob) VALUES (?, ?, ?, ?)""",
+            (player.code, player.first_name, player.last_name, player.yob),
+        )
+        conn.commit()
+    return player
+
+
+def insert_stats(c, player_season: PlayerSeason, PlayerTeam_code):
+    c.execute(
+        """ INSERT INTO stats (player_team_id, games_played, points_scored, two_pointers_made, two_pointers_attempted, 
+        three_pointers_made, three_pointers_attempted, free_throws_made, free_throws_attempted, offensive_rebounds, defensive_rebounds, 
+        assists, steals, turnovers, blocks, fouls)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (
+            PlayerTeam_code,
+            player_season.games_played,
+            player_season.points_scored,
+            player_season.two_pointers_made,
+            player_season.two_pointers_attempted,
+            player_season.three_pointers_made,
+            player_season.three_pointers_attempted,
+            player_season.free_throws_made,
+            player_season.free_throws_attempted,
+            player_season.offensive_rebounds,
+            player_season.defensive_rebounds,
+            player_season.assists,
+            player_season.steals,
+            player_season.turnovers,
+            player_season.blocks,
+            player_season.fouls,
+        ),
+    )
+
+
+@player_insert.post("/player/add-season", response_model=PlayerSeason)
+async def insert_player_season(player_season: PlayerSeason):
+    with get_db_conn() as conn:
+        c = conn.cursor()
+
+        # Find team id
+        c.execute("""SELECT id FROM teams WHERE code = ?""", (player_season.team_code,))
+        team_id_row = c.fetchone()
+        if not team_id_row:
+            raise HTTPException(status_code=404, detail="Team not found")
+        team_id = team_id_row[0]
+
+        # Find player id
+        c.execute(
+            """SELECT id FROM players WHERE code = ?""", (player_season.player_code,)
+        )
+        player_id_row = c.fetchone()
+        if not player_id_row:
+            raise HTTPException(status_code=404, detail="Player not found")
+        player_id = player_id_row[0]
+
+        # Find season id
+        c.execute(
+            """SELECT id FROM seasons WHERE "year" = ?""", (player_season.season_year,)
+        )
+        season_id_row = c.fetchone()
+        if not season_id_row:
+            raise HTTPException(status_code=404, detail="Season not found")
+        season_id = season_id_row[0]
+
+        # Insert into playersTeams table
+        c.execute(
+            """INSERT INTO playersTeams (player_id, team_id, season_id) VALUES (?, ?, ?)""",
+            (player_id, team_id, season_id),
+        )
+        conn.commit()
+
+        # Get playerTeam id
+        c.execute(
+            """SELECT id FROM playersTeams WHERE player_id = ? AND team_id = ? AND season_id = ?""",
+            (player_id, team_id, season_id),
+        )
+        player_team_id_row = c.fetchone()
+        if not player_team_id_row:
+            raise HTTPException(
+                status_code=500, detail="Failed to retrieve playerTeam ID"
+            )
+        player_team_id = player_team_id_row[0]
+
+        # Insert stats
+        insert_stats(c, player_season, player_team_id)
+        conn.commit()
+
+    return player_season
