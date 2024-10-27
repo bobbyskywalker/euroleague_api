@@ -1,23 +1,11 @@
 from fastapi import APIRouter, HTTPException
 import sqlite3
-from contextlib import contextmanager
 
 from inserts.player_class import Player, PlayerSeason
+from routers.db_connect import get_db_conn
 
 player_insert = APIRouter()
 db_path = "../euroleague.db"
-
-
-@contextmanager
-def get_db_conn():
-    conn = sqlite3.connect(
-        db_path, timeout=10
-    )  # Set timeout to handle database locking
-    try:
-        yield conn
-    finally:
-        conn.close()
-
 
 @player_insert.post("/player/add", response_model=Player)
 async def insert_player(player: Player):
