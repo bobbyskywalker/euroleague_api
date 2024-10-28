@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from dal.get_teams import TeamFetcher
+from app.dal.fetch_teams import TeamFetcher
 
 teams_router = APIRouter()
 team_fetch = TeamFetcher()

@@ -1,5 +1,5 @@
-from dal.utils import get_db_conn
-from models.team_model import Team
+from app.dal.utils import get_db_conn
+from app.models.team_model import Team
 
 
 def add_team(team: Team):

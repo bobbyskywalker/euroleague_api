@@ -1,7 +1,7 @@
 import sqlite3
 
-from dal.utils import get_db_conn
-from models.player_get_model import PlayerGet, PlayerGetCarrer
+from app.dal.utils import get_db_conn
+from app.models.player_get_model import PlayerGet, PlayerGetCarrer
 
 
 class PlayerFetcher:

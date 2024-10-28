@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from models.team_model import Team
-from dal.insert_team import add_team
+from app.models.team_model import Team
+from app.dal.insert_team import add_team
 
 team_insert = APIRouter()
 

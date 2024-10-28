@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 
-from dal.utils import get_db_conn
-from models.player_insert_model import Player
-from models.player_insert_model import PlayerSeason
+from app.dal.utils import get_db_conn
+from app.models.player_insert_model import Player
+from app.models.player_insert_model import PlayerSeason
 
 
 def add_player(player: Player):

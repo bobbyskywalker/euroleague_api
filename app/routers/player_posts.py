@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from models.player_insert_model import Player, PlayerSeason
-from dal.insert_players import add_player, add_player_season
+from app.models.player_insert_model import Player, PlayerSeason
+from app.dal.insert_players import add_player, add_player_season
 
 player_insert = APIRouter()
 

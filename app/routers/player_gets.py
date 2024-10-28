@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from dal.get_players import PlayerFetcher
+from app.dal.fetch_players import PlayerFetcher
 
 player_fetch = PlayerFetcher()
 players_get_router = APIRouter()

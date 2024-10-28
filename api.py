@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 
-from routers.player_gets import players_get_router
-from routers.team_gets import teams_router
-from routers.player_posts import player_insert
-from routers.team_posts import team_insert
+from app.routers.player_gets import players_get_router
+from app.routers.team_gets import teams_router
+from app.routers.player_posts import player_insert
+from app.routers.team_posts import team_insert
 
 app = FastAPI()
 

@@ -1,8 +1,8 @@
 import sqlite3
 
-from dal.utils import get_db_conn
-from models.team_model import Team
-from models.team_roster_model import TeamRoster
+from app.dal.utils import get_db_conn
+from app.models.team_model import Team
+from app.models.team_roster_model import TeamRoster
 
 
 class TeamFetcher:
