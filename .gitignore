@@ -1,5 +1,3 @@
-*.txt
 *.env
-/myenv
-*/__pycache__
-/__pycache__
+*/API_env
+**/__pycache__
