@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 import sqlite3
 
-from inserts.team_class import Team
-from routers.db_connect import get_db_conn
+from models.team_model import Team
+from dal.db_connect import get_db_conn
 
 team_insert = APIRouter()
 db_path = "../euroleague.db"

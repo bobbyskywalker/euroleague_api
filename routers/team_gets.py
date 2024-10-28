@@ -1,12 +1,9 @@
 from fastapi import APIRouter, HTTPException
 
-from fetchers.get_teams import TeamFetcher
+from dal.get_teams import TeamFetcher
 
-
-db_path = "../euroleague.db"
-
-team_fetch = TeamFetcher(db_path)
 teams_router = APIRouter()
+team_fetch = TeamFetcher()
 
 
 # GET: all teams that ever played in euroleague

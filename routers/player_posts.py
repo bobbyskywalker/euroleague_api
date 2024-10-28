@@ -1,11 +1,10 @@
 from fastapi import APIRouter, HTTPException
 import sqlite3
 
-from inserts.player_class import Player, PlayerSeason
-from routers.db_connect import get_db_conn
+from models.player_insert_model import Player, PlayerSeason
+from dal.utils import get_db_conn
 
 player_insert = APIRouter()
-db_path = "../euroleague.db"
 
 @player_insert.post("/player/add", response_model=Player)
 async def insert_player(player: Player):

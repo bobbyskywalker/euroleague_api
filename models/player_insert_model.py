@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 
-# TODO: add constraints to both classes
+
 class Player(BaseModel):
     code: str = Field(..., min_length=2, max_length=30)
     first_name: str = Field(..., min_length=2, max_length=30)
@@ -15,7 +15,7 @@ class PlayerSeason(BaseModel):
     season_year: int = Field(..., ge=2000, le=datetime.now().year)
 
     # stats
-    games_played: int = Field(..., ge=1, le=50) 
+    games_played: int = Field(..., ge=1, le=50)
     points_scored: float = Field(..., ge=0, le=100)
     two_pointers_made: float = Field(..., ge=0, le=100)
     two_pointers_attempted: float = Field(..., ge=0, le=100)
