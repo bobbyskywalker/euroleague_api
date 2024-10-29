@@ -6,6 +6,8 @@ from app.routers.player_posts import player_insert
 from app.routers.team_posts import team_insert
 from app.routers.player_updates import player_update
 from app.routers.team_updates import team_update
+from app.routers.player_deletes import player_delete
+from app.routers.team_deletes import team_delete
 
 app = FastAPI()
 
@@ -15,6 +17,8 @@ app.include_router(player_insert)
 app.include_router(team_insert)
 app.include_router(player_update)
 app.include_router(team_update)
+app.include_router(player_delete)
+app.include_router(team_delete)
 
 if __name__ == "__main__":
     import uvicorn

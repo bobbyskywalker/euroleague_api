@@ -5,7 +5,7 @@ from app.dal.put_players import player_put
 
 player_update = APIRouter()
 
-@player_update.put("/player/{player_code}", response_model=Player)
+@player_update.put("/player/update/{player_code}", response_model=Player)
 async def update_player(player_code: str, player: Player):
     r = player_put(player, player_code)
     if r:

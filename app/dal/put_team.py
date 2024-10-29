@@ -1,5 +1,3 @@
-from fastapi import HTTPException
-
 from app.dal.utils import get_db_conn
 from app.models.team_model import Team
 
