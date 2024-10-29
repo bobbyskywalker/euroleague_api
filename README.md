@@ -1,7 +1,9 @@
+
 # EUROLEAGUE API
 
-REST API offering basketball EUROLEAGUE data fetching from SQLite database. 
-Created with FastAPI.
+This project provides a REST API with full CRUD functionality for managing basketball Euroleague data. App built with FastAPI.
+
+
 
 
 
@@ -12,6 +14,7 @@ Created with FastAPI.
 
 - Swagger UI
 - Multiple GET requests related to current & historic league data
+- Rest of the CRUD functionality
 
 
 
@@ -19,3 +22,4 @@ Created with FastAPI.
 
 * Player yob (year of birth) is stored in the base as DATE type (eg. 1991-01-01), the month & day are not valid
 * For team codes just GET the team list
+* SQLite database created with https://github.com/bobbyskywalker/euroleague-database-creator
