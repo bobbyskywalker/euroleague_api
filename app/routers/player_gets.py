@@ -17,7 +17,7 @@ async def all_players_data(season: int):
 
 # GET: player carrer grouped by seasons
 @players_get_router.get("/player/{firstname}/{lastname}")
-async def single_player_data(firstname: str, lastname: str):
+async def single_player_data_and_stats(firstname: str, lastname: str):
     player = player_fetch.retrieve_player(firstname.upper(), lastname.upper())
     if not player or player == "[]":
         raise HTTPException(status_code=404, detail="Player not found.")

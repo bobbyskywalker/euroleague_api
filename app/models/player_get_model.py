@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class PlayerGet(BaseModel):
     id: int
+    code: str
     first_name: str
     last_name: str
     team_name: str
@@ -10,6 +11,7 @@ class PlayerGet(BaseModel):
 
 class PlayerGetCarrer(BaseModel):
     id: int
+    code: str
     first_name: str
     last_name: str
     yob: str

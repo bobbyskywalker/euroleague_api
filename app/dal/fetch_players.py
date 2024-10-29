@@ -14,7 +14,7 @@ class PlayerFetcher:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute(
-                """SELECT p.id AS id, p.first_name AS first_name, p.last_name AS last_name, t.name AS team_name
+                """SELECT p.id AS id, p.code AS code, p.first_name AS first_name, p.last_name AS last_name, t.name AS team_name
                     FROM players p 
                     JOIN playersTeams pt ON p.id = pt.player_id 
                     JOIN teams t ON pt.team_id  = t.id 
@@ -28,6 +28,7 @@ class PlayerFetcher:
         players_data = [
             PlayerGet(
                 id=row["id"],
+                code=row["code"],
                 first_name=row["first_name"],
                 last_name=row["last_name"],
                 team_name=row["team_name"],
@@ -44,7 +45,7 @@ class PlayerFetcher:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute(
-                """SELECT DISTINCT p.id, p.first_name, p.last_name, p.yob, t.name AS team_name, s.year, 
+                """SELECT DISTINCT p.id, p.code, p.first_name, p.last_name, p.yob, t.name AS team_name, s.year, 
                             st.points_scored, st.two_pointers_made, st.two_pointers_attempted, 
                             st.three_pointers_made, st.three_pointers_attempted, 
                             st.free_throws_made, st.free_throws_attempted, 
@@ -64,6 +65,7 @@ class PlayerFetcher:
         player_data = [
             PlayerGetCarrer(
                 id=row["id"],
+                code=row["code"],
                 first_name=row["first_name"],
                 last_name=row["last_name"],
                 yob=row["yob"],
