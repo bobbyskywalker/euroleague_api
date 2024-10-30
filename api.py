@@ -1,27 +1,20 @@
 from fastapi import FastAPI
 
 #TODO: add functional pagination to the search engine
-# unify the controllers :))
 
-from app.routers.player_gets import players_get_router
-from app.routers.team_gets import teams_router
-from app.routers.player_posts import player_insert
-from app.routers.team_posts import team_insert
-from app.routers.player_updates import player_update
-from app.routers.team_updates import team_update
-from app.routers.player_deletes import player_delete
-from app.routers.team_deletes import team_delete
+from app.routers.player_routers import players_get, players_insert, players_update, players_delete
+from app.routers.team_routers import teams_get, teams_insert, teams_update, teams_delete
 
 app = FastAPI()
 
-app.include_router(players_get_router)
-app.include_router(teams_router)
-app.include_router(player_insert)
-app.include_router(team_insert)
-app.include_router(player_update)
-app.include_router(team_update)
-app.include_router(player_delete)
-app.include_router(team_delete)
+app.include_router(players_get)
+app.include_router(teams_get)
+app.include_router(players_insert)
+app.include_router(teams_insert)
+app.include_router(players_update)
+app.include_router(teams_update)
+app.include_router(players_delete)
+app.include_router(teams_delete)
 
 if __name__ == "__main__":
     import uvicorn
