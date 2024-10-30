@@ -9,7 +9,8 @@ class PlayerFetcher:
         pass
 
     # retrieves players list for a provided season
-    def retrieve_all_players(self, season):
+    def retrieve_all_players(self, season, page, limit):
+        offset = (page - 1) * limit
         with get_db_conn() as conn:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
@@ -19,8 +20,9 @@ class PlayerFetcher:
                     JOIN playersTeams pt ON p.id = pt.player_id 
                     JOIN teams t ON pt.team_id  = t.id 
                     JOIN seasons s ON pt.season_id = s.id
-                    WHERE s."year" = ?""",
-                (season,),
+                    WHERE s."year" = ?
+                    LIMIT ? OFFSET ?""",
+                (season, limit, offset),
             )
             players = c.fetchall()
             conn.commit()

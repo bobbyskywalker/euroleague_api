@@ -1,18 +1,19 @@
 from fastapi import APIRouter, HTTPException
 
 from app.dal.fetch_players import PlayerFetcher
+from app.models.player_get_model import PaginatedPlayersResponse
 
 player_fetch = PlayerFetcher()
 players_get_router = APIRouter()
 
 
 # GET: all players list from one season
-@players_get_router.get("/players/{season}")
-async def all_players_data(season: int):
-    players = player_fetch.retrieve_all_players(season)
+@players_get_router.get("/players/{season}", response_model=PaginatedPlayersResponse)
+async def all_players_data(season: int, page: int, limit: int):
+    players = player_fetch.retrieve_all_players(season, page, limit)
     if not players or players == "[]":
         raise HTTPException(status_code=404, detail="Resource not found.")
-    return players
+    return PaginatedPlayersResponse(total=len(players), items=players)
 
 
 # GET: player carrer grouped by seasons
