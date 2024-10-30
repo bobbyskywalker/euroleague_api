@@ -1,4 +1,3 @@
-from fastapi import Query
 from pydantic import BaseModel
 from typing import List, Optional
 
@@ -10,9 +9,8 @@ class PlayerGet(BaseModel):
     team_name: str
 
 class PaginatedPlayersResponse(BaseModel):
-    total: int 
+    total: int
     items: list[PlayerGet]
-
 
 class PlayerGetCarrer(BaseModel):
     id: int
@@ -36,3 +34,4 @@ class PlayerGetCarrer(BaseModel):
     turnovers: float
     blocks: float
     fouls: float
+

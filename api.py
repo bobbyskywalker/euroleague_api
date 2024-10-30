@@ -1,5 +1,8 @@
 from fastapi import FastAPI
 
+#TODO: add functional pagination to the search engine
+# unify the controllers :))
+
 from app.routers.player_gets import players_get_router
 from app.routers.team_gets import teams_router
 from app.routers.player_posts import player_insert

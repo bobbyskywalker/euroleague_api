@@ -24,5 +24,3 @@ async def single_player_data_and_stats(firstname: str, lastname: str):
     if not player or player == "[]":
         raise HTTPException(status_code=404, detail="Player not found.")
     return player
-
-    
