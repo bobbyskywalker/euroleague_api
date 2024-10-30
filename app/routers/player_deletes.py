@@ -6,7 +6,7 @@ from app.dal.remove_players import rm_player
 player_delete = APIRouter()
 
 
-@player_delete.delete("/player/delete/{player_code}")
+@player_delete.delete("/players/{player_code}")
 async def delete_player(player_code: str):
     r = rm_player(player_code)
     if r:

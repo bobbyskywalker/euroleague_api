@@ -5,7 +5,7 @@ from app.dal.remove_team import rm_team
 
 team_delete = APIRouter()
 
-@team_delete.delete("/team/delete/{team_code}")
+@team_delete.delete("/teams/{team_code}")
 async def delete_team(team_code: str):
     r = rm_team(team_code)
     if r:

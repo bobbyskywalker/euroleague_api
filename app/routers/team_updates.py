@@ -6,8 +6,8 @@ from app.dal.put_team import team_put
 
 team_update = APIRouter()
 
-
-@team_update.put("/team/update/{team_code}", response_model=Team)
+# r = return value
+@team_update.put("/teams/{team_code}", response_model=Team)
 async def update_team(team: Team, team_code: str):
     r = team_put(team, team_code)
     if r:
