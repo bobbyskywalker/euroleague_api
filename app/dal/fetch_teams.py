@@ -4,7 +4,7 @@ from app.dal.utils import get_db_conn
 from app.models.team_model import Team
 from app.models.team_roster_model import TeamRoster
 
-
+# the object fetches teams data from db and returns it in a predefined model format
 class TeamFetcher:
     def __init__(self) -> None:
         pass

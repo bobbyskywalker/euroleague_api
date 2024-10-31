@@ -42,7 +42,7 @@ def team_roster(team_code, season):
 
 
 # PUT: update team
-# r = return value
+# r = error check
 @teams_update.put("/teams/{team_code}", response_model=Team)
 async def update_team(team: Team, team_code: str):
     r = team_put(team, team_code)

@@ -50,8 +50,8 @@ async def insert_player_season(player_season: PlayerSeason):
 
 # POST: search for a specific player
 @players_insert.post("/players/search", response_model=PaginatedPlayersResponse)
-async def search_player(attributes: SearchPlayer):
-    players = find_player(attributes)
+async def search_player(attributes: SearchPlayer, page: int, limit: int):
+    players = find_player(attributes, page, limit)
     players_data = [
         PlayerGet(
             id=row[0],

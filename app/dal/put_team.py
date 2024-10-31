@@ -1,7 +1,6 @@
 from app.dal.utils import get_db_conn
 from app.models.team_model import Team
 
-
 def team_put(team: Team, old_code):
     with get_db_conn() as conn:
         c = conn.cursor()

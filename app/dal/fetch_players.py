@@ -4,6 +4,7 @@ from app.dal.utils import get_db_conn
 from app.models.player_get_model import PlayerGet, PlayerGetCarrer
 
 
+# the object fetches players data from db and returns it in a predefined model format
 class PlayerFetcher:
     def __init__(self) -> None:
         pass

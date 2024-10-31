@@ -1,7 +1,6 @@
 from app.dal.utils import get_db_conn
 from app.models.player_insert_model import Player
 
-
 def player_put(player: Player, old_code: str):
     with get_db_conn() as conn:
         c = conn.cursor()
