@@ -1,3 +1,6 @@
 *.env
 */API_env
 **/__pycache__
+*.log
+/misc/images
+/db

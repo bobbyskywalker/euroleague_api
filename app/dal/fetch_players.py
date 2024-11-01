@@ -3,7 +3,6 @@ import sqlite3
 from app.dal.utils import get_db_conn
 from app.models.player_get_model import PlayerGet, PlayerGetCarrer
 
-
 # the object fetches players data from db and returns it in a predefined model format
 class PlayerFetcher:
     def __init__(self) -> None:
@@ -42,7 +41,7 @@ class PlayerFetcher:
         return players_data
 
     # retrieves player data across all seasons
-    def retrieve_player(self, first_name: str, last_name: str):
+    def retrieve_player(self, player_id):
         with get_db_conn() as conn:
             # ret rows as dicts
             conn.row_factory = sqlite3.Row
@@ -59,8 +58,8 @@ class PlayerFetcher:
                     JOIN stats st ON pt.id = st.player_team_id 
                     JOIN teams t ON pt.team_id  = t.id 
                     JOIN seasons s ON pt.season_id = s.id
-                    WHERE p.first_name = ? AND p.last_name = ?""",
-                (first_name, last_name),
+                    WHERE p.id = ?""",
+                (player_id, ),
             )
             player_career = c.fetchall()
             conn.commit()
@@ -92,3 +91,12 @@ class PlayerFetcher:
             for row in player_career
         ]
         return player_data
+    
+    def get_player_pic(self, player_id):
+        with get_db_conn() as conn:
+            c = conn.cursor()
+            c.execute('''SELECT img_name FROM players WHERE id = ?''', (player_id,))
+            res = c.fetchone()
+            if res is not None:
+                return res[0]
+        return None
