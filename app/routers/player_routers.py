@@ -13,7 +13,7 @@ from app.dal.insert_players import add_player, add_player_season, add_player_pic
 from app.dal.search_player import find_player
 from app.dal.put_players import player_put
 from app.dal.remove_players import rm_player
-
+from config.env_loader import get_images_path
 
 player_fetch = PlayerFetcher()
 
@@ -22,12 +22,11 @@ players_insert = APIRouter()
 players_update = APIRouter()
 players_delete = APIRouter()
 
-IMG_DIR = 'misc/images/'
+IMG_DIR = get_images_path()
 
 # temp, debug
 import logging
 logging.basicConfig(filename='API.log', level=logging.INFO, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
-
 
 # GET: all players list from one season
 @players_get.get("/players/season/{season}", response_model=PaginatedPlayersResponse)
@@ -47,7 +46,7 @@ async def single_player_data_and_stats(player_id: int):
         raise HTTPException(status_code=404, detail="Player not found.")
     return player
 
-# TODO: GET: player image
+# GET: player image
 @players_get.get("/players/download/{player_id}", response_class=FileResponse)
 async def player_image(player_id: int):
     file_name = player_fetch.get_player_pic(player_id)
