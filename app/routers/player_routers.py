@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, File, UploadFile
 from fastapi.responses import FileResponse
 import uuid
-import json
+import os
 
 from app.models.player_get_model import PaginatedPlayersResponse
 from app.models.player_insert_model import Player, PlayerSeason
@@ -26,7 +26,7 @@ IMG_DIR = 'misc/images/'
 
 # temp, debug
 import logging
-logging.basicConfig(filename='example.log', level=logging.INFO, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='API.log', level=logging.INFO, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 # GET: all players list from one season
@@ -48,17 +48,16 @@ async def single_player_data_and_stats(player_id: int):
     return player
 
 # TODO: GET: player image
-@players_get.get("/players/download/{player_id}")
+@players_get.get("/players/download/{player_id}", response_class=FileResponse)
 async def player_image(player_id: int):
-    logging.info("dupa dupa dupa")
-    # file_name = player_fetch.get_player_pic(int(player_id))
-    # logging.info(f'File name: {file_name} {type(file_name)}')
-    # if file_name is None:
-    #     raise HTTPException(status_code=404, detail="Player not found")
-    # image_path = os.path.join(IMG_DIR, file_name)
-    # if not os.path.isfile(image_path):
-    #     raise HTTPException(status_code=404, detail="Image not found")
-    return json.dumps('dupa dupa dupa')
+    file_name = player_fetch.get_player_pic(player_id)
+    logging.info(f'File name: {file_name} {type(file_name)}')
+    if file_name is None:
+        raise HTTPException(status_code=404, detail="Player not found")
+    image_path = os.path.join(IMG_DIR, file_name)
+    if not os.path.isfile(image_path):
+        raise HTTPException(status_code=404, detail="Image not found")
+    return FileResponse(image_path)
 
 # POST: insert player
 @players_insert.post("/players", response_model=Player)
