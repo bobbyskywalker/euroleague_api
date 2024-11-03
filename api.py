@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from app.routers.player_routers import players_get, players_insert, players_update, players_delete
 from app.routers.team_routers import teams_get, teams_insert, teams_update, teams_delete
 
+#TODO: 'objectify' DAL
+
 app = FastAPI()
 
 app.include_router(players_get)

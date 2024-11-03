@@ -13,6 +13,7 @@ from app.dal.insert_players import add_player, add_player_season, add_player_pic
 from app.dal.search_player import find_player
 from app.dal.put_players import player_put
 from app.dal.remove_players import rm_player
+from app.dal.utils import save_thumbnail
 from config.env_loader import get_images_path
 
 player_fetch = PlayerFetcher()
@@ -24,6 +25,7 @@ players_delete = APIRouter()
 
 IMG_DIR = get_images_path()
 
+#TODO: configure logging
 # temp, debug
 import logging
 logging.basicConfig(filename='API.log', level=logging.INFO, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
@@ -41,10 +43,10 @@ async def all_players_data(season: int, page: int, limit: int):
 # GET: player carrer grouped by seasons
 @players_get.get("/players/{player_id}")
 async def single_player_data_and_stats(player_id: int):
-    player = player_fetch.retrieve_player(player_id)
+    player, thumbnail = player_fetch.retrieve_player(player_id)
     if not player or player == "[]":
         raise HTTPException(status_code=404, detail="Player not found.")
-    return player
+    return {"thumbnail": thumbnail, "player": player}
 
 # GET: player image
 @players_get.get("/players/download/{player_id}", response_class=FileResponse)
@@ -90,13 +92,22 @@ async def search_player(attributes: SearchPlayer, page: int, limit: int):
 # POST: player_image
 @players_insert.post("/players/upload/{player_id}")
 async def player_image(player_id: int, image: UploadFile = File(...)):
+    
+    # pngs only
+    if image.content_type != "image/png":
+        raise HTTPException(status_code=400, detail="Only PNG files are allowed.")
+    
     image.filename = f'{uuid.uuid4()}.png'
     content = await image.read()
+    img_path = f'{IMG_DIR}{image.filename}'
     # save
-    with open(f'{IMG_DIR}{image.filename}', "wb") as f:
+    with open(img_path, "wb") as f:
         f.write(content)
+    # save thumbnail
+    save_thumbnail(img_path, image.filename)
     # save name to db
     add_player_picture(image.filename, player_id)
+
     return {"filename": image.filename}
 
 

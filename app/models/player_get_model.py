@@ -7,6 +7,7 @@ class PlayerGet(BaseModel):
     first_name: str
     last_name: str
     team_name: str
+    thumbnail: str
 
 class PaginatedPlayersResponse(BaseModel):
     total: int

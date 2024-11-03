@@ -14,3 +14,10 @@ def get_images_path():
     if not images_path:
         raise Exception("No images path provided")
     return images_path
+
+def get_thumbnails_path():
+    load_dotenv()
+    th_path = os.getenv('THUMBNAILS_PATH')
+    if not th_path:
+        raise Exception("No thumbnails path provided")
+    return th_path

@@ -97,15 +97,6 @@ def add_player_season(player_season: PlayerSeason):
 def add_player_picture(img_name: str, player_id: int):
     with get_db_conn() as conn:
         c = conn.cursor()
-        
-        # check for col existence
-        c.execute("PRAGMA table_info(players)")
-        columns = [row[1] for row in c.fetchall()]
-        
-        if 'img_name' not in columns:
-            c.execute("ALTER TABLE players ADD COLUMN img_name TEXT")
-            conn.commit()
-
         c.execute(
             """UPDATE players SET img_name = ? WHERE id = ?""",
             (img_name, player_id),

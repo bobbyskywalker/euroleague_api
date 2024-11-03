@@ -1,6 +1,6 @@
 import sqlite3
 
-from app.dal.utils import get_db_conn
+from app.dal.utils import get_db_conn, get_th_base64
 from app.models.player_get_model import PlayerGet, PlayerGetCarrer
 
 # the object fetches players data from db and returns it in a predefined model format
@@ -15,7 +15,7 @@ class PlayerFetcher:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute(
-                """SELECT p.id AS id, p.code AS code, p.first_name AS first_name, p.last_name AS last_name, t.name AS team_name
+                """SELECT p.id AS id, p.code AS code, p.first_name AS first_name, p.last_name AS last_name, p.img_name AS img_name, t.name AS team_name
                     FROM players p 
                     JOIN playersTeams pt ON p.id = pt.player_id 
                     JOIN teams t ON pt.team_id  = t.id 
@@ -34,6 +34,7 @@ class PlayerFetcher:
                 first_name=row["first_name"],
                 last_name=row["last_name"],
                 team_name=row["team_name"],
+                thumbnail=get_th_base64(row["img_name"])
             )
             for row in players
         ]
@@ -47,7 +48,7 @@ class PlayerFetcher:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute(
-                """SELECT DISTINCT p.id, p.code, p.first_name, p.last_name, p.yob, t.name AS team_name, s.year, 
+                """SELECT DISTINCT p.id, p.code, p.first_name, p.last_name, p.yob, p.img_name AS img_name, t.name AS team_name, s.year, 
                             st.points_scored, st.two_pointers_made, st.two_pointers_attempted, 
                             st.three_pointers_made, st.three_pointers_attempted, 
                             st.free_throws_made, st.free_throws_attempted, 
@@ -64,6 +65,9 @@ class PlayerFetcher:
             player_career = c.fetchall()
             conn.commit()
 
+        #th to appear just once in json response
+        thumbnail = get_th_base64(player_career[0]["img_name"])
+
         player_data = [
             PlayerGetCarrer(
                 id=row["id"],
@@ -72,6 +76,7 @@ class PlayerFetcher:
                 last_name=row["last_name"],
                 yob=row["yob"],
                 team_name=row["team_name"],
+                thumbnail=get_th_base64(row["img_name"]),
                 year=row["year"],
                 points_scored=row["points_scored"],
                 two_pointers_made=row["two_pointers_made"],
@@ -90,7 +95,7 @@ class PlayerFetcher:
             )
             for row in player_career
         ]
-        return player_data
+        return player_data, thumbnail
     
     def get_player_pic(self, player_id):
         with get_db_conn() as conn:
