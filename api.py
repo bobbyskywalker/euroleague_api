@@ -4,6 +4,7 @@ from app.routers.player_routers import players_get, players_insert, players_upda
 from app.routers.team_routers import teams_get, teams_insert, teams_update, teams_delete
 
 #TODO: 'objectify' DAL
+#TODO: add logging
 
 app = FastAPI()
 

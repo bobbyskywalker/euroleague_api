@@ -1,7 +1,7 @@
 import sqlite3
 
-from app.dal.utils import get_db_conn
-from app.models.team_model import Team
+from app.dal.utils import get_db_conn, get_th_base64
+from app.models.team_model import TeamView
 from app.models.team_roster_model import TeamRoster
 
 # the object fetches teams data from db and returns it in a predefined model format
@@ -17,10 +17,10 @@ class TeamFetcher:
             c = conn.cursor()
 
             if season == None:
-                c.execute("SELECT id, code, name FROM teams")
+                c.execute("SELECT id, code, name, img_name FROM teams")
             else:
                 c.execute(
-                    """SELECT DISTINCT t.id, t.code, t.name 
+                    """SELECT DISTINCT t.id, t.code, t.name, t.img_name
                     FROM teams t
                     JOIN playersTeams pt on t.id = pt.team_id 
                     JOIN seasons s on s.id  = pt.season_id 
@@ -30,11 +30,11 @@ class TeamFetcher:
             teams = c.fetchall()
             conn.commit()
 
-        teams_data = [Team(code=row["code"], name=row["name"]) for row in teams]
+        teams_data = [TeamView(id=row["id"], code=row["code"], name=row["name"], thumbnail=get_th_base64(row["img_name"])) for row in teams]
 
         return teams_data
 
-    def get_team_roster(self, season, team_code):
+    def get_team_roster(self, season, team_id):
         with get_db_conn() as conn:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
@@ -44,8 +44,8 @@ class TeamFetcher:
                     JOIN playersTeams pt on p.id = pt.player_id 
                     JOIN teams t on t.id = pt.team_id
                     JOIN seasons s on s.id = pt.season_id 
-                    WHERE s."year" = ? and t.code = ?""",
-                (season, team_code),
+                    WHERE s."year" = ? and t.id = ?""",
+                (season, team_id),
             )
             players = c.fetchall()
 
@@ -61,3 +61,12 @@ class TeamFetcher:
         ]
 
         return roster
+    
+    def get_team_pic(self, team_id):
+        with get_db_conn() as conn:
+            c = conn.cursor()
+            c.execute('''SELECT img_name FROM teams WHERE id = ?''', (team_id,))
+            res = c.fetchone()
+            if res is not None:
+                return res[0]
+        return None

@@ -65,6 +65,9 @@ class PlayerFetcher:
             player_career = c.fetchall()
             conn.commit()
 
+        if not player_career:
+            return None, None
+        
         #th to appear just once in json response
         thumbnail = get_th_base64(player_career[0]["img_name"])
 

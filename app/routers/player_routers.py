@@ -3,17 +3,15 @@ from fastapi.responses import FileResponse
 import uuid
 import os
 
-from app.models.player_get_model import PaginatedPlayersResponse
 from app.models.player_insert_model import Player, PlayerSeason
 from app.models.search_player_class import SearchPlayer
-from app.models.player_get_model import PlayerGet
-from app.models.player_get_model import PaginatedPlayersResponse
+from app.models.player_get_model import PlayerGet, PaginatedPlayersResponse
 from app.dal.fetch_players import PlayerFetcher
 from app.dal.insert_players import add_player, add_player_season, add_player_picture
 from app.dal.search_player import find_player
 from app.dal.put_players import player_put
 from app.dal.remove_players import rm_player
-from app.dal.utils import save_thumbnail
+from app.dal.utils import save_thumbnail, get_th_base64
 from config.env_loader import get_images_path
 
 player_fetch = PlayerFetcher()
@@ -84,6 +82,7 @@ async def search_player(attributes: SearchPlayer, page: int, limit: int):
             first_name=row[2],
             last_name=row[3],
             team_name=row[4],
+            thumbnail=get_th_base64(row[5])
         )
         for row in players
     ]
@@ -112,17 +111,17 @@ async def player_image(player_id: int, image: UploadFile = File(...)):
 
 
 # PUT: update player info
-@players_update.put("/players/{player_code}", response_model=Player)
-async def update_player(player_code: str, player: Player):
-    r = player_put(player, player_code)
+@players_update.put("/players/{player_id}", response_model=Player)
+async def update_player(player_id: int, player: Player):
+    r = player_put(player, player_id)
     if r:
         raise HTTPException(status_code=404, detail="Player not found")
     return player
 
 # DELETE: delete player
-@players_delete.delete("/players/{player_code}")
-async def delete_player(player_code: str):
-    r = rm_player(player_code)
+@players_delete.delete("/players/{player_id}")
+async def delete_player(player_id : int):
+    r = rm_player(player_id)
     if r:
         raise HTTPException(status_code=404, detail="Player not found")
-    return player_code
+    return player_id
