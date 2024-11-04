@@ -9,10 +9,11 @@ from app.dal.utils import save_thumbnail
 from app.models.team_model import Team
 from app.dal.fetch_teams import TeamFetcher
 from app.dal.put_team import team_put
-from app.dal.insert_team import add_team, add_team_picture
+from app.dal.insert_team import TeamInserter
 from app.dal.remove_team import rm_team
 
 team_fetch = TeamFetcher()
+team_add = TeamInserter()
 
 teams_get = APIRouter()
 teams_update = APIRouter()
@@ -78,7 +79,7 @@ async def delete_team(team_id = int):
 # POST: insert team
 @teams_insert.post("/teams", response_model=Team)
 async def insert_team(team: Team):
-    add_team(team)
+    team_add.add_team(team)
     return team
 
 # POST: team picture
@@ -96,6 +97,6 @@ async def team_image(team_id: int, image: UploadFile = File(...)):
     # save thumbnail
     save_thumbnail(img_path, image.filename)
     # save name to db
-    add_team_picture(image.filename, team_id)
+    team_add.add_team_picture(image.filename, team_id)
 
     return {"filename": image.filename}

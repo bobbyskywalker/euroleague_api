@@ -7,7 +7,7 @@ from app.models.player_insert_model import Player, PlayerSeason
 from app.models.search_player_class import SearchPlayer
 from app.models.player_get_model import PlayerGet, PaginatedPlayersResponse
 from app.dal.fetch_players import PlayerFetcher
-from app.dal.insert_players import add_player, add_player_season, add_player_picture
+from app.dal.insert_players import PlayerInserter
 from app.dal.search_player import find_player
 from app.dal.put_players import player_put
 from app.dal.remove_players import rm_player
@@ -15,6 +15,7 @@ from app.dal.utils import save_thumbnail, get_th_base64
 from config.env_loader import get_images_path
 
 player_fetch = PlayerFetcher()
+player_add = PlayerInserter()
 
 players_get = APIRouter()
 players_insert = APIRouter()
@@ -54,13 +55,13 @@ async def player_image(player_id: int):
 # POST: insert player
 @players_insert.post("/players", response_model=Player)
 async def insert_player(player: Player):
-    add_player(player)
+    player_add.add_player(player)
     return player
 
 # POST: insert player's single season performance (stats)
 @players_insert.post("/players/season", response_model=PlayerSeason)
 async def insert_player_season(player_season: PlayerSeason):
-    add_player_season(player_season)
+    player_add.add_player_season(player_season)
     return player_season
 
 # POST: search for a specific player
@@ -97,7 +98,7 @@ async def player_image(player_id: int, image: UploadFile = File(...)):
     # save thumbnail
     save_thumbnail(img_path, image.filename)
     # save name to db
-    add_player_picture(image.filename, player_id)
+    player_add.add_player_picture(image.filename, player_id)
 
     return {"filename": image.filename}
 
