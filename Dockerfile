@@ -3,7 +3,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 COPY . /app
-COPY ../database /database
+COPY /db /database
 
 RUN apt-get update && apt-get install -y python3-pip
 

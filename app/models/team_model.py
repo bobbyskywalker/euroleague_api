@@ -7,7 +7,7 @@ class Team(BaseModel):
 
 class TeamView(Team):
     id: int
-    thumbnail: str | None = Field(default=None)
+    thumbnail: str
     @validator("thumbnail")
     def validate_thumbnail(cls, v):
         try:
