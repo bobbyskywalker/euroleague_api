@@ -12,7 +12,6 @@ th_path = get_thumbnails_path()
 # utility func to establish a connection with database, prevents database lock
 @contextmanager
 def get_db_conn():
-
     conn = sqlite3.connect(db_path, timeout=10)
     try:
         yield conn

@@ -1,6 +1,6 @@
 from app.dal.utils import get_db_conn
 
-def rm_team(team_id: str):
+def rm_team(team_id: str) -> int:
     with get_db_conn() as conn:
         c = conn.cursor()
         c.execute("""DELETE FROM teams WHERE id = ?""", (team_id,))

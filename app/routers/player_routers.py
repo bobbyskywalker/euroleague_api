@@ -23,16 +23,10 @@ players_delete = APIRouter()
 
 IMG_DIR = get_images_path()
 
-#TODO: configure logging
-# temp, debug
-import logging
-logging.basicConfig(filename='API.log', level=logging.INFO, filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
-
 # GET: all players list from one season
 @players_get.get("/players/season/{season}", response_model=PaginatedPlayersResponse)
 async def all_players_data(season: int, page: int, limit: int):
     players = player_fetch.retrieve_all_players(season, page, limit)
-    logging.info(f'Players: {players} {type(players)}')
     if not players or players == "[]":
         raise HTTPException(status_code=404, detail="Resource not found.")
     return PaginatedPlayersResponse(total=len(players), items=players)
@@ -50,7 +44,6 @@ async def single_player_data_and_stats(player_id: int):
 @players_get.get("/players/download/{player_id}", response_class=FileResponse)
 async def player_image(player_id: int):
     file_name = player_fetch.get_player_pic(player_id)
-    logging.info(f'File name: {file_name} {type(file_name)}')
     if file_name is None:
         raise HTTPException(status_code=404, detail="Player not found")
     image_path = os.path.join(IMG_DIR, file_name)
@@ -61,7 +54,6 @@ async def player_image(player_id: int):
 # POST: insert player
 @players_insert.post("/players", response_model=Player)
 async def insert_player(player: Player):
-    logging.info(f'Player: {player} {type(player)}')
     add_player(player)
     return player
 

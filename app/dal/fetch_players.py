@@ -3,7 +3,7 @@ import sqlite3
 from app.dal.utils import get_db_conn, get_th_base64
 from app.models.player_get_model import PlayerGet, PlayerGetCarrer
 
-# the object fetches players data from db and returns it in a predefined model format
+# the object is responsible for fetching players data from db and returning it in a predefined model format
 class PlayerFetcher:
     def __init__(self) -> None:
         pass
