@@ -21,5 +21,5 @@ This project provides a REST API with full CRUD functionality for managing baske
 ## Notes
 
 * Player yob (year of birth) is stored in the base as DATE type (eg. 1991-01-01), the month & day are not valid
-* For team codes just GET the team list
+* Docker default database location is within the project scope
 * SQLite database created with https://github.com/bobbyskywalker/euroleague-database-creator

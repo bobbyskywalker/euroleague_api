@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, File, UploadFile
+from fastapi import APIRouter, HTTPException, File, UploadFile, Depends
 from fastapi.responses import FileResponse
 import uuid
 import os
@@ -12,6 +12,7 @@ from app.dal.search_player import find_player
 from app.dal.put_players import player_put
 from app.dal.remove_players import rm_player
 from app.dal.utils import save_thumbnail, get_th_base64
+from app.auth.authenticate import verify
 from config.env_loader import get_images_path
 
 player_fetch = PlayerFetcher()
@@ -24,13 +25,18 @@ players_delete = APIRouter()
 
 IMG_DIR = get_images_path()
 
+# TODO: doesnt ask each time
+# make data access authenticated
 # GET: all players list from one season
 @players_get.get("/players/season/{season}", response_model=PaginatedPlayersResponse)
-async def all_players_data(season: int, page: int, limit: int):
-    players = player_fetch.retrieve_all_players(season, page, limit)
-    if not players or players == "[]":
-        raise HTTPException(status_code=404, detail="Resource not found.")
-    return PaginatedPlayersResponse(total=len(players), items=players)
+async def all_players_data(season: int, page: int, limit: int, Verification: bool = Depends(verify)):
+    if Verification:
+        players = player_fetch.retrieve_all_players(season, page, limit)
+        if not players or players == "[]":
+            raise HTTPException(status_code=404, detail="Resource not found.")
+        return PaginatedPlayersResponse(total=len(players), items=players)
+    else:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 
 # GET: player carrer grouped by seasons
