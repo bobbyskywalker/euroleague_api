@@ -25,18 +25,13 @@ players_delete = APIRouter()
 
 IMG_DIR = get_images_path()
 
-# TODO: doesnt ask each time
-# make data access authenticated
 # GET: all players list from one season
 @players_get.get("/players/season/{season}", response_model=PaginatedPlayersResponse)
-async def all_players_data(season: int, page: int, limit: int, Verification: bool = Depends(verify)):
-    if Verification:
+async def all_players_data(season: int, page: int, limit: int):
         players = player_fetch.retrieve_all_players(season, page, limit)
         if not players or players == "[]":
             raise HTTPException(status_code=404, detail="Resource not found.")
         return PaginatedPlayersResponse(total=len(players), items=players)
-    else:
-        raise HTTPException(status_code=401, detail="Unauthorized")
 
 
 # GET: player carrer grouped by seasons
@@ -60,15 +55,21 @@ async def player_image(player_id: int):
 
 # POST: insert player
 @players_insert.post("/players", response_model=Player)
-async def insert_player(player: Player):
-    player_add.add_player(player)
-    return player
+async def insert_player(player: Player, Verification: bool = Depends(verify)):
+    if Verification:
+        player_add.add_player(player)
+        return player
+    else:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 # POST: insert player's single season performance (stats)
 @players_insert.post("/players/season", response_model=PlayerSeason)
-async def insert_player_season(player_season: PlayerSeason):
-    player_add.add_player_season(player_season)
-    return player_season
+async def insert_player_season(player_season: PlayerSeason, Verification: bool = Depends(verify)):
+    if Verification:
+        player_add.add_player_season(player_season)
+        return player_season
+    else:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 # POST: search for a specific player
 @players_insert.post("/players/search", response_model=PaginatedPlayersResponse)
@@ -89,38 +90,46 @@ async def search_player(attributes: SearchPlayer, page: int, limit: int):
 
 # POST: player_image
 @players_insert.post("/players/upload/{player_id}")
-async def player_image(player_id: int, image: UploadFile = File(...)):
-    
-    # pngs only
-    if image.content_type != "image/png":
-        raise HTTPException(status_code=400, detail="Only PNG files are allowed.")
-    
-    image.filename = f'{uuid.uuid4()}.png'
-    content = await image.read()
-    img_path = f'{IMG_DIR}{image.filename}'
-    # save
-    with open(img_path, "wb") as f:
-        f.write(content)
-    # save thumbnail
-    save_thumbnail(img_path, image.filename)
-    # save name to db
-    player_add.add_player_picture(image.filename, player_id)
+async def player_image(player_id: int, image: UploadFile = File(...), Verification: bool = Depends(verify)):
+    if Verification:
+        # pngs only
+        if image.content_type != "image/png":
+            raise HTTPException(status_code=400, detail="Only PNG files are allowed.")
+        
+        image.filename = f'{uuid.uuid4()}.png'
+        content = await image.read()
+        img_path = f'{IMG_DIR}{image.filename}'
+        # save
+        with open(img_path, "wb") as f:
+            f.write(content)
+        # save thumbnail
+        save_thumbnail(img_path, image.filename)
+        # save name to db
+        player_add.add_player_picture(image.filename, player_id)
 
-    return {"filename": image.filename}
+        return {"filename": image.filename}
+    else:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 
 # PUT: update player info
 @players_update.put("/players/{player_id}", response_model=Player)
-async def update_player(player_id: int, player: Player):
-    r = player_put(player, player_id)
-    if r:
-        raise HTTPException(status_code=404, detail="Player not found")
-    return player
+async def update_player(player_id: int, player: Player, Verification: bool = Depends(verify)):
+    if Verification:
+        r = player_put(player, player_id)
+        if r:
+            raise HTTPException(status_code=404, detail="Player not found")
+        return player
+    else:
+        raise HTTPException(status_code=401, detail="Unauthorized")
 
 # DELETE: delete player
 @players_delete.delete("/players/{player_id}")
-async def delete_player(player_id : int):
-    r = rm_player(player_id)
-    if r:
-        raise HTTPException(status_code=404, detail="Player not found")
-    return player_id
+async def delete_player(player_id : int, Verification: bool = Depends(verify)):
+    if Verification:
+        r = rm_player(player_id)
+        if r:
+            raise HTTPException(status_code=404, detail="Player not found")
+        return player_id
+    else:
+        raise HTTPException(status_code=401, detail="Unauthorized")
