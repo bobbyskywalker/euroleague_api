@@ -4,3 +4,4 @@
 *.log
 /misc/images
 /db
+*.DS_Store
