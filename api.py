@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from log.middleware import log_middleware
 from starlette.middleware.base import BaseHTTPMiddleware
 
@@ -8,17 +8,42 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+
+from app.view.visualize.heatmap_cmp import heatmap_compare
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="app/view/static"), name="static")
 
 templates = Jinja2Templates(directory="app/view/static")
 
+# frontend controllers, to put somewhere else later
 @app.get("/", response_class=HTMLResponse)
-async def read_item(request: Request):
+async def read_homepage(request: Request):
     return templates.TemplateResponse(
-        request=request, name="index.html", context={}
+        request=request, name="home.html", context={}
     )
 
+@app.get("/heatmap", response_class=HTMLResponse)
+async def heatmap_input(request: Request):
+    return templates.TemplateResponse(
+        request=request, name="heatmap.html", context={}
+    )
+
+@app.post("/heatmap/submit")
+async def save_players(
+    player1_first: str = Form(...),
+    player1_last: str = Form(...),
+    player2_first: str = Form(...),
+    player2_last: str = Form(...),
+    player3_first: str = Form(...),
+    player3_last: str = Form(...),
+    season: int = Form(...),
+):
+    heatmap_compare(
+        [(player1_first, player1_last), (player2_first, player2_last), (player3_first, player3_last)],
+        season
+    )
+     
 # logging middleware
 app.add_middleware(BaseHTTPMiddleware, dispatch=log_middleware)
 # controllers/routers

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Players</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            width: 300px;
+        }
+        button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #555;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enter 3 Players</h1>
+    <form action="/heatmap/submit" method="post">
+        <!-- Player 1 -->
+        <div>
+            <input type="text" name="player1_first" placeholder="First Name" required>
+            <input type="text" name="player1_last" placeholder="Last Name" required>
+        </div>
+        <!-- Player 2 -->
+        <div>
+            <input type="text" name="player2_first" placeholder="First Name" required>
+            <input type="text" name="player2_last" placeholder="Last Name" required>
+        </div>
+        <!-- Player 3 -->
+        <div>
+            <input type="text" name="player3_first" placeholder="First Name" required>
+            <input type="text" name="player3_last" placeholder="Last Name" required>
+        </div>
+        
+        <!-- Single Season Input -->
+        <div>
+            <input type="text" name="season" placeholder="Season" required>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
