@@ -84,20 +84,5 @@
         <!-- Submit -->
         <button type="submit">Submit</button>
     </form>
-
-    <!-- Modal for displaying the image -->
-    {% if image_path %}
-    <div id="heatmapModal" class="modal" style="display:block;">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img src="../visualize/visuals/heatmap.png" class="modal-content" id="heatmapImage">
-    </div>
-    {% endif %}
-
-    <script>
-        // Function to close the modal
-        function closeModal() {
-            document.getElementById("heatmapModal").style.display = "none";
-        }
-    </script>
 </body>
 </html>
