@@ -31,6 +31,7 @@ async def heatmap_input(request: Request):
 
 @app.post("/heatmap/submit")
 async def save_players(
+    request: Request,
     player1_first: str = Form(...),
     player1_last: str = Form(...),
     player2_first: str = Form(...),
@@ -43,6 +44,13 @@ async def save_players(
         [(player1_first, player1_last), (player2_first, player2_last), (player3_first, player3_last)],
         season
     )
+    image_path = 'app/view/visualize/visuals/heatmap.png'
+
+    return templates.TemplateResponse(
+        "heatmap.html", 
+        {"request": request, "image_path": image_path}
+    )
+
      
 # logging middleware
 app.add_middleware(BaseHTTPMiddleware, dispatch=log_middleware)
