@@ -33,7 +33,8 @@ def heatmap_compare(names: list, season: int):
         ]
         for player in structured_data
     }
-
+    if not structured_data:
+        return None
     stats_array = np.array(list(stats.values()))
 
     players = list(stats.keys())

@@ -108,7 +108,9 @@ class PlayerFetcher:
             if res is not None:
                 return res[0]
         return None
-    
+
+
+#### SECTION: UTILS ####
  
 # used in heatmap comparison
 def get_players_data(names: list, season: int):
@@ -133,3 +135,18 @@ def get_players_data(names: list, season: int):
             player_data = c.fetchall()
             data.append(player_data)
     return data
+
+# used in shooting chart
+def get_player_shooting(name: list):
+    with get_db_conn() as conn:
+        c = conn.cursor()
+        c.execute(
+                """SELECT DISTINCT s.year, st.two_pointers_made, st.two_pointers_attempted, st.three_pointers_made,
+                  st.three_pointers_attempted, st.free_throws_made, st.free_throws_attempted
+                  FROM players p
+                  JOIN playersTeams pt ON p.id = pt.player_id
+                  JOIN seasons s ON pt.season_id = s.id
+                  JOIN stats st ON pt.id = st.player_team_id 
+                  WHERE p.first_name = ? AND p.last_name = ?""", (name[0][0], name[0][1]))
+        player_shooting = c.fetchall()
+    return player_shooting

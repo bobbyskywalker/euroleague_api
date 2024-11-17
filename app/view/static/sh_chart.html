@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shot Type Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shorthandcss@1.1.1/dist/shorthand.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:200,300,400,500,600,700,800,900&display=swap" />
+</head>
+
+<body class="bg-black muli">
+    <section id="form-section" class="min-h-100vh flex justify-center items-center">
+        <div class="w-full max-w-md bg-black br-8 p-10 shadow-lg">
+            <h1 class="white fs-l2 fw-700 text-center mb-5">Player Information</h1>
+
+            <form action="/shooting-chart/submit" method="POST" class="flex flex-col gap-5">
+                <!-- First Name -->
+                <div>
+                    <label for="first-name" class="white fs-s2 fw-500 mb-2 block">First Name</label>
+                    <input type="text" id="first-name" name="player_first" 
+                           class="w-full p-3 br-4 bg-white focus-indigo fw-400" 
+                           placeholder="First name" required />
+                </div>
+
+                <!-- Last Name -->
+                <div>
+                    <label for="last-name" class="white fs-s2 fw-500 mb-2 block">Last Name</label>
+                    <input type="text" id="last-name" name="player_last" 
+                           class="w-full p-3 br-4 bg-white focus-indigo fw-400" 
+                           placeholder="Last name" required />
+                </div>
+
+                <!-- Shot Type Selection -->
+                <div>
+                    <label for="shot-type" class="white fs-s2 fw-500 mb-2 block">Shot Type</label>
+                    <select id="shot-type" name="shot_type" 
+                            class="w-full p-3 br-4 bg-white focus-indigo fw-400" required>
+                        <option value="" disabled selected>Select a shot type</option>
+                        <option value="3-pointer">3-Pointer</option>
+                        <option value="2-pointer">2-Pointer</option>
+                        <option value="free-throw">Free Throw</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center mt-5">
+                    <button type="submit" 
+                            class="button-lg bg-indigo-lightest-20 indigo-lightest focus-white fw-300 fs-s3">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</body>
+
+</html>
