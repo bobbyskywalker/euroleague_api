@@ -1,4 +1,4 @@
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from fastapi.templating import Jinja2Templates
 from fastapi import Request, Form, APIRouter
 
@@ -32,14 +32,8 @@ async def save_players(
     player3_last: str = Form(...),
     season: int = Form(...),
 ):
-    heatmap_compare(
+    img = heatmap_compare(
         [(player1_first.upper(), player1_last.upper()), (player2_first.upper(), player2_last.upper()), (player3_first.upper(), player3_last.upper())],
         season
     )
-    image_path = '/static/heatmap.png'
-
-    return templates.TemplateResponse(
-        "hm_result.html", 
-        {"request": request, "image_path": image_path}
-    )
-    
+    return Response(content=img.getvalue(), media_type="image/png")

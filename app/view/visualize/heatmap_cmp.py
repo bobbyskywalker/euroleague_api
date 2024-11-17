@@ -1,3 +1,5 @@
+from io import BytesIO
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
@@ -52,5 +54,7 @@ def heatmap_compare(names: list, season: int):
     plt.ylabel("Players")
     plt.tight_layout()
 
-    output_path = "app/view/static/heatmap.png"
-    plt.savefig(output_path)
+    img_stream = BytesIO()
+    plt.savefig(img_stream, format='png')
+    img_stream.seek(0)
+    return img_stream
