@@ -5,7 +5,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.routers.player_routers import players_get, players_insert, players_update, players_delete
 from app.routers.team_routers import teams_get, teams_insert, teams_update, teams_delete
-from app.routers.frontend import front
+from app.routers.frontend_handler import front
 
 app = FastAPI()
 
