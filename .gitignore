@@ -3,5 +3,4 @@
 **/__pycache__
 *.log
 /misc/images
-/db
 *.DS_Store
