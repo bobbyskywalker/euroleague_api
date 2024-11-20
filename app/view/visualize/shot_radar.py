@@ -35,15 +35,15 @@ def shot_percentage_radar(name, shot_type):
     values += values[:1]
     angles += angles[:1]
 
-    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+    fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
     ax.fill(angles, values, color='blue', alpha=0.25)
     ax.plot(angles, values, color='blue', linewidth=2)
 
     for angle, value in zip(angles, values):
         ax.text(angle, value - 0.05, f'{value:.2%}', ha='center', va='bottom', fontsize=8, weight='bold', color='purple')
-
+    
     for i, angle in enumerate(angles[:-1]):
-        ax.text(angle, 1.1, stats[i], ha='center', va='center', fontsize=10)
+        ax.text(angle, values[i] * 1.2, str(stats[i]) + '/' + str(int(stats[i]) + 1), color='black', ha='center', va='center', fontsize=10)
 
     ax.set_yticklabels([])
     ax.xaxis.set_visible(False)
