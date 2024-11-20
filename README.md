@@ -7,8 +7,8 @@ An application built with FastAPI, structured using the MVC design pattern.
 
 ## Demo
 ![Swagger UI](https://github.com/bobbyskywalker/euroleague_api/blob/main/misc/swagger_demo.gif?raw=true)
-![Frontend Homepage](https://github.com/bobbyskywalker/euroleague_api/blob/main/misc/front_demo.gif?raw=true)
-![Heatmap Demo](https://github.com/bobbyskywalker/euroleague_api/blob/main/misc/heatmap_demo.gif?raw=true)
+![Frontend Homepage](https://github.com/bobbyskywalker/euroleague_api/blob/frontend/misc/front_demo.gif?raw=true)
+![Heatmap Demo](https://github.com/bobbyskywalker/euroleague_api/blob/frontend/misc/heatmap_demo.gif?raw=true)
 ## Features
 
 - Swagger UI for API documentation and testing.
