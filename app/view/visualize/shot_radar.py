@@ -5,6 +5,8 @@ from app.dal.fetch_players import get_player_shooting
 import matplotlib.pyplot as plt
 import numpy as np
 
+import logging
+
 def shot_percentage_radar(name, shot_type):
     stats = []
     values = []
@@ -27,7 +29,6 @@ def shot_percentage_radar(name, shot_type):
                 made = season[3]
             case _:
                 raise ValueError("Invalid shot type. Choose 1 (Free throws), 2 (Two-pointers), or 3 (Three-pointers).")
-
         values.append(made / attempts if attempts > 0 else 0)
 
     angles = np.linspace(0, 2 * np.pi, len(stats), endpoint=False).tolist()

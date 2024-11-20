@@ -56,11 +56,11 @@ async def save_chart(
     shot_type: str = Form(...),
 ):
     if shot_type == '3-pointer':
-        shot_type = 1
+        shot_type = 3
     elif shot_type == '2-pointer':
         shot_type = 2
     elif shot_type == 'free-throw':
-        shot_type = 3
+        shot_type = 1
 
     img = shot_percentage_radar([(player_first.upper(), player_last.upper())], shot_type)
 
