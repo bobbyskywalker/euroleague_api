@@ -1,0 +1,50 @@
+Table players {
+  player_id int
+  player_code int
+  first_name text
+  last_name text
+  yob int
+}
+
+Table teams {
+  team_id int
+  team_code text
+  team_name text
+}
+
+Table seasons {
+  season_id int
+  season_year int
+}
+
+Table playersTeams /*junction table*/ {
+  pT_id int
+  player_id int
+  team_id int
+  season_id int
+}
+
+Table stats {
+  stats_id int 
+  player_team_id int 
+  games_played int
+  points_scored int
+  two_pointers_made int
+  two_pointers_attempted int
+  three_pointers_made int
+  three_pointers_attempted int
+  free_throws_made int
+  free_throws_attempted int
+  offensive_rebounds int
+  defensive_rebounds int
+  assists int
+  steals int
+  turnovers int
+  blocks int
+  fouls int
+}
+
+Ref: playersTeams.player_id < players.player_id
+Ref: playersTeams.team_id < teams.team_id
+Ref: playersTeams.season_id < seasons.season_id
+Ref: stats.stats_id < playersTeams.pT_id
