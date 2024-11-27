@@ -150,3 +150,21 @@ def get_player_shooting(name: list):
                   WHERE p.first_name = ? AND p.last_name = ?""", (name[0][0], name[0][1]))
         player_shooting = c.fetchall()
     return player_shooting
+
+# player ranking by stat TODO: rebounds fix
+def get_ranking(stat: str, season: int) -> tuple:
+    if stat == "rebounds":
+        stat = "offensive_rebounds, st.defensive_rebounds"
+    with get_db_conn() as conn:
+        c = conn.cursor()
+        c.execute(
+                f"""SELECT p.first_name, p.last_name, st.{stat}
+                    FROM players p 
+                    JOIN playersTeams pt ON p.id = pt.player_id
+                    JOIN stats st ON pt.id = st.player_team_id 
+                    JOIN teams t ON pt.team_id  = t.id 
+                    JOIN seasons s ON pt.season_id = s.id
+                    WHERE s.year = ?
+                    ORDER BY st.{stat} DESC LIMIT 10""".format(stat), (season, ))
+        player_ranking = c.fetchall()
+    return player_ranking

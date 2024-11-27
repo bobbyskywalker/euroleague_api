@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Players</title>
+    <title>Enter Players and Stats</title>
     <style>
         body {
             background-color: black;
@@ -45,32 +45,27 @@
     </style>
 </head>
 <body>
-    <form action="/heatmap/submit" method="post">
-        <h1>Enter 3 Players</h1>
-        <!-- Player 1 -->
-        <div>
-            <input type="text" name="player1_first" placeholder="First Name" required>
-            <input type="text" name="player1_last" placeholder="Last Name" required>
-        </div>
-        <!-- Player 2 -->
-        <div>
-            <input type="text" name="player2_first" placeholder="First Name" required>
-            <input type="text" name="player2_last" placeholder="Last Name" required>
-        </div>
-        <!-- Player 3 -->
-        <div>
-            <input type="text" name="player3_first" placeholder="First Name" required>
-            <input type="text" name="player3_last" placeholder="Last Name" required>
-        </div>
-        
+    <form action="/leaders/submit" method="post">
+        <h1>Select stats & season</h1>
+    
+        <!-- Stat Dropdown -->
+        <select name="stat_type" id="stat_type" required>
+            <option value="" disabled selected>Select a Stat</option>
+            <option value="points_scored">Points per Game</option>
+            <option value="assists">Assists per Game</option>
+            <option value="rebounds">Rebounds per Game</option>
+            <option value="three_pointers_made">3PM Made per Game</option>
+            <option value="turnovers">Turnovers</option>
+            <option value="steals">Steals</option>
+            <option value="blocks">Blocks</option>
+            <option value="fouls">Fouls</option>
+        </select>
+    
         <!-- Season Dropdown -->
-        <div>
-            <select name="season" id="season" required>
-                <option value="" disabled selected>Select a Season</option>
-            </select>
-        </div>
-
-        <!-- Submit -->
+        <select name="season" id="season" required>
+            <option value="" disabled selected>Select a Season</option>
+        </select>
+    
         <button type="submit">Submit</button>
     </form>
 
@@ -88,6 +83,16 @@
             option.textContent = season;
             seasonDropdown.appendChild(option);
         }
+
+        // Fallback validation to ensure both fields are selected
+        document.querySelector('form').addEventListener('submit', (e) => {
+            const statType = document.getElementById('stat_type').value;
+            const season = seasonDropdown.value;
+            if (!statType || !season) {
+                e.preventDefault(); // Prevent form submission
+                alert("Please select both a stat type and a season.");
+            }
+        });
     </script>
 </body>
 </html>
