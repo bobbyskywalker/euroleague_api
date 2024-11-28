@@ -2,7 +2,7 @@
 # EUROLEAGUE REST API & DATA VISUALIZATION
 
 This project provides a REST API with full CRUD functionality for managing basketball Euroleague data.
-Frontend side of the application offers simple matplotlib visualizations and comparisons of players' stats.
+Frontend side of the application offers simple matplotlib visualizations of rankings & comparisons of players' stats.
 An application built with FastAPI, structured using the MVC design pattern.
 
 ## Features
@@ -16,10 +16,10 @@ An application built with FastAPI, structured using the MVC design pattern.
 - Frontend featuring matplotlib visualizations for comparing players' stats.
 
 ## Demo
-![Swagger UI](https://github.com/bobbyskywalker/euroleague_api/blob/main/misc/swagger_demo.gif?raw=true)
-![Frontend Homepage](https://github.com/bobbyskywalker/euroleague_api/blob/main/misc/front_demo.gif?raw=true)
-![Heatmap Demo](https://github.com/bobbyskywalker/euroleague_api/blob/main/misc/heatmap_demo.gif?raw=true)
-
+![Swagger UI](misc/swagger_demo.png)
+![Frontend Homepage](misc/front_demo.png)
 
 ## Notes
-* SQLite database created with https://github.com/bobbyskywalker/euroleague-database-creator
+* App deployed with Koyeb 
+* https://existing-ami-agme-2e8a50d4.koyeb.app/docs - for SwaggerUI API GUI
+* https://existing-ami-agme-2e8a50d4.koyeb.app/ - frontend side of the app
