@@ -9,7 +9,7 @@ class PlayerFetcher:
         pass
 
     # retrieves players list for a provided season
-    def retrieve_all_players(self, season, page, limit):
+    def retrieve_all_players(self, season, page, limit) -> list[dict]:
         offset = (page - 1) * limit
         with get_db_conn() as conn:
             conn.row_factory = sqlite3.Row
@@ -42,7 +42,7 @@ class PlayerFetcher:
         return players_data
 
     # retrieves player data across all seasons
-    def retrieve_player(self, player_id):
+    def retrieve_player(self, player_id) -> list[dict]:
         with get_db_conn() as conn:
             # ret rows as dicts
             conn.row_factory = sqlite3.Row
@@ -100,7 +100,7 @@ class PlayerFetcher:
         ]
         return player_data, thumbnail
     
-    def get_player_pic(self, player_id):
+    def get_player_pic(self, player_id) -> str:
         with get_db_conn() as conn:
             c = conn.cursor()
             c.execute('''SELECT img_name FROM players WHERE id = ?''', (player_id,))
@@ -113,7 +113,7 @@ class PlayerFetcher:
 #### SECTION: UTILS ####
  
 # used in heatmap comparison
-def get_players_data(names: list, season: int):
+def get_players_data(names: list, season: int) -> tuple:
     data = []
     with get_db_conn() as conn:
         for full_name in names:
@@ -137,7 +137,7 @@ def get_players_data(names: list, season: int):
     return data
 
 # used in shooting chart
-def get_player_shooting(name: list):
+def get_player_shooting(name: list) -> tuple:
     with get_db_conn() as conn:
         c = conn.cursor()
         c.execute(
@@ -151,20 +151,24 @@ def get_player_shooting(name: list):
         player_shooting = c.fetchall()
     return player_shooting
 
-# player ranking by stat TODO: rebounds fix
+# player ranking by stat fetcher
 def get_ranking(stat: str, season: int) -> tuple:
     if stat == "rebounds":
-        stat = "offensive_rebounds, st.defensive_rebounds"
-    with get_db_conn() as conn:
-        c = conn.cursor()
-        c.execute(
-                f"""SELECT p.first_name, p.last_name, st.{stat}
+        stat = "(st.offensive_rebounds + st.defensive_rebounds) AS rebounds"
+        stat2 = "rebounds"
+    else:
+        stat = f'st.{stat}'
+        stat2 = stat
+    query = f"""SELECT p.first_name, p.last_name, {stat}
                     FROM players p 
                     JOIN playersTeams pt ON p.id = pt.player_id
                     JOIN stats st ON pt.id = st.player_team_id 
                     JOIN teams t ON pt.team_id  = t.id 
                     JOIN seasons s ON pt.season_id = s.id
                     WHERE s.year = ?
-                    ORDER BY st.{stat} DESC LIMIT 10""".format(stat), (season, ))
+                    ORDER BY {stat2} DESC LIMIT 10""".format(stat)
+    with get_db_conn() as conn:
+        c = conn.cursor()
+        c.execute(query, (season, ))
         player_ranking = c.fetchall()
     return player_ranking

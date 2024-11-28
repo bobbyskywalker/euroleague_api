@@ -70,13 +70,11 @@
     </form>
 
     <script>
-        // Get the current year
         const currentYear = new Date().getFullYear();
 
-        // Generate season options
         const seasonDropdown = document.getElementById('season');
         for (let year = 2000; year <= currentYear; year++) {
-            const nextYear = (year + 1).toString().slice(-2); // Get the last two digits of next year
+            const nextYear = (year + 1).toString().slice(-2);
             const season = `${year}/${nextYear}`;
             const option = document.createElement('option');
             option.value = season;
@@ -84,12 +82,12 @@
             seasonDropdown.appendChild(option);
         }
 
-        // Fallback validation to ensure both fields are selected
+        // both fields to be selected, validation
         document.querySelector('form').addEventListener('submit', (e) => {
             const statType = document.getElementById('stat_type').value;
             const season = seasonDropdown.value;
             if (!statType || !season) {
-                e.preventDefault(); // Prevent form submission
+                e.preventDefault();
                 alert("Please select both a stat type and a season.");
             }
         });

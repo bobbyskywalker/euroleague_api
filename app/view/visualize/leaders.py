@@ -1,26 +1,20 @@
 from io import BytesIO
 import matplotlib.pyplot as plt
 
+# get top10 in selected stat for provided season
 def create_ranking(stat_type: str, player_ranking: list) -> BytesIO:
-    ranks = [i for i in range(1, 11)]  # Ranks from 1 to 10
+    ranks = [i for i in range(1, 11)]
     
-    # Create lists to store player names and scores
     player_names = []
     scores = []
     
-    # Iterate through player ranking
     for player in player_ranking:
         first_name, last_name = player[0], player[1]
-        
-        if stat_type == 'rebounds':
-            score = player[2] + player[3]
-        else:
-            score = player[2]
+        score = round(player[2], 1)
 
         player_names.append(f'{first_name} {last_name}')
         scores.append(score)
 
-    # Create a larger figure
     plt.figure(figsize=(30, 15))
 
     plt.scatter(ranks, scores, color='red')

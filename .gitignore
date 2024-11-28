@@ -2,5 +2,5 @@
 */API_env
 **/__pycache__
 *.log
-/misc/images
 *.DS_Store
+/db/euroleague.db
