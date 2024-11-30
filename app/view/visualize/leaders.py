@@ -15,7 +15,7 @@ def create_ranking(stat_type: str, player_ranking: list) -> BytesIO:
         player_names.append(f'{first_name} {last_name}')
         scores.append(score)
 
-    plt.figure(figsize=(30, 15))
+    plt.figure(figsize=(26, 12))
 
     plt.scatter(ranks, scores, color='red')
     

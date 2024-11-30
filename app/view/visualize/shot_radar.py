@@ -35,7 +35,7 @@ def shot_percentage_radar(name, shot_type):
     values += values[:1]
     angles += angles[:1]
 
-    fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
+    fig, ax = plt.subplots(figsize=(14, 12), subplot_kw=dict(polar=True))
     ax.fill(angles, values, color='blue', alpha=0.25)
     ax.plot(angles, values, color='blue', linewidth=2)
 
