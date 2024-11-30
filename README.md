@@ -23,3 +23,6 @@ An application built with FastAPI, structured using the MVC design pattern.
 * App deployed with Koyeb 
 * https://existing-ami-agme-2e8a50d4.koyeb.app/docs - for SwaggerUI API GUI
 * https://existing-ami-agme-2e8a50d4.koyeb.app/ - frontend side of the app
+* App contains a cronjob to reset and update the database everyday at 2AM CET
+* Some players from current season might not appear in the base, due to the fact they played too few games and/or
+  joined midseason and are not included in the official Euroleague statistics base yet.
