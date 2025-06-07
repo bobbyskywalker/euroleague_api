@@ -27,5 +27,3 @@ An application built with FastAPI, structured using the MVC design pattern.
 
 ## Author
 * https://github.com/bobbyskywalker
-
-## License
